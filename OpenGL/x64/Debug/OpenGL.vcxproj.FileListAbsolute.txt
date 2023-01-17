@@ -1,0 +1,3 @@
+C:\Users\Yohan\source\repos\OpenGL\OpenGL\x64\Debug\OpenGL.vcxproj.MdMergeInputs.cache
+C:\Users\Yohan\source\repos\OpenGL\OpenGL\x64\Debug\OpenGL.vcxproj.cppwinrt_plat.cache
+C:\Users\Yohan\source\repos\OpenGL\OpenGL\x64\Debug\OpenGL.vcxproj.cppwinrt_comp.cache

@@ -1,0 +1,4 @@
+﻿C:\Users\Yohan\source\repos\OpenGL\OpenGL\shader.vshader(1,2-8): error X1504: invalid preprocessor command 'version'
+C:\Users\Yohan\source\repos\OpenGL\OpenGL\shader.vshader(3,1-6): error X3000: unrecognized identifier 'layout'
+  
+  compilation failed; no code produced
