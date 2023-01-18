@@ -154,7 +154,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="F_shader.shader" />
+    <None Include="F_shader2.shader" />
     <None Include="V_shader.shader" />
+    <None Include="V_shader2.shader" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="abstraction.h" />

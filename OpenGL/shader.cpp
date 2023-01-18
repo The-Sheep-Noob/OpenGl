@@ -7,6 +7,7 @@
 
 Shader::~Shader() {
 	glDeleteShader(shader_id);
+    glDeleteProgram(shader_id); // deleting program
 }
 
 Shader::Shader(const std::string path , const unsigned int shaderType) : program_id(glCreateProgram()) , shader_id(glCreateShader(shaderType)) {

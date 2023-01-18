@@ -66,6 +66,30 @@ int main(void) {
         std::cout << "wth bro !" << std::endl;
     }
 
+   
+   float smallSquareBuffer[] = {
+        -0.2f,0.2f,
+        -0.2f,-0.2f,
+         0.2f,-0.2f,
+         0.2f, 0.2f
+    };
+
+   unsigned int indices2[] = { // has to be unsigned
+        0,1,2,
+        2,3,0,
+    };
+
+    VertexBuffer myVertBuffer2;
+    myVertBuffer2.setData(smallSquareBuffer , sizeof(smallSquareBuffer), GL_STATIC_DRAW);
+    myVertBuffer2.layout(0, 2, sizeof(float) * 2);
+
+    IndexBuffer myIndexBuffer2;
+    myIndexBuffer2.setData(indices2, 6 * sizeof(unsigned int), GL_STATIC_DRAW);
+
+    Shader myFShader2("F_shader2.shader", GL_FRAGMENT_SHADER);
+    Shader myVShader2("V_shader2.shader", GL_VERTEX_SHADER, myFShader2.getProgram());
+  
+
     float data[] = {
        -0.7f, 0.5f ,0.0f, 1.0f,
        -0.5f, -0.5f,0.0f, 0.0f,
@@ -95,7 +119,9 @@ int main(void) {
 
     Texture myTexture("shaun.png" , myFShader.getProgram());
 
-    
+    int addLocation = glGetUniformLocation(myFShader2.getProgram() , "add");
+    float add = 0;
+
     bool nice = true;
     int u_location = glGetUniformLocation(myFShader.getProgram(), "i_color"); // specifing uniform location
     if (u_location == -1) {
@@ -115,7 +141,7 @@ int main(void) {
     SwitchColor greenSwitch(0.05f, green);
     SwitchColor blueSwitch(0.05f, blue);
 
-    glm::mat4 projection = glm::ortho(-0.5f, 0.5f, -0.5f, 0.5f, -1.0f, 1.0f);
+    glm::mat4 projection = glm::ortho(-0.5f, 0.5f, -0.5f, 0.5f, -1.0f, 1.0f); // if a vertex is more than the value it will be rendered out of the window
     int u2_location = glGetUniformLocation(myFShader.getProgram(), "projection"); // specifing uniform location
 
     glUniformMatrix4fv(u2_location, 1, GL_FALSE, &projection[0][0]);
@@ -137,12 +163,33 @@ int main(void) {
         greenSwitch.Switch();
         redSwitch.Switch();
         blueSwitch.Switch();
+
+        myVertexArray.bind();
+        myIndexBuffer.bind();
+        myVertBuffer.bind();
+        myFShader.bindProgram();
+       // myTexture.bind();
+
         glUniform4f(u_location, red, green, blue , 1.0f  ); // 4f = 4 floats -> setting uniform value
 
         //  object to draw , vertices to begin , number of vertices 
        // glDrawArrays(GL_TRIANGLES,0,6); // draw the triangle
 
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr); // draw from a index buffer
+
+        myVertexArray.unbind();
+        myIndexBuffer2.bind();
+        myVertBuffer2.bind();
+        myFShader2.bindProgram();
+
+        add += 0.01f;
+        if (add > 0.5f) {
+            add = 0.0f;
+        }
+        glUniform1f(addLocation, add);
+
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr); // draw from a index buffer
+
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
@@ -151,7 +198,6 @@ int main(void) {
         glfwPollEvents();
     }
 
-    glDeleteProgram(myFShader.getProgram()); // deleting program
     glfwTerminate();
 
     return 0;

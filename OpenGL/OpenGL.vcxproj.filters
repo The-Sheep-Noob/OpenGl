@@ -53,6 +53,12 @@
     <None Include="F_shader.shader">
       <Filter>Shader Files</Filter>
     </None>
+    <None Include="F_shader2.shader">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="V_shader2.shader">
+      <Filter>Shader Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="vertexBuffer.h">
