@@ -68,10 +68,10 @@ int main(void) {
 
    
    float smallSquareBuffer[] = {
-        -0.2f,0.2f,
-        -0.2f,-0.2f,
-         0.2f,-0.2f,
-         0.2f, 0.2f
+        -1.0f,-0.9f,
+        -1.0f,-1.0f,
+        -0.9f,-1.0f,
+        -0.9f,-0.9f
     };
 
    unsigned int indices2[] = { // has to be unsigned
@@ -182,8 +182,8 @@ int main(void) {
         myVertBuffer2.bind();
         myFShader2.bindProgram();
 
-        add += 0.01f;
-        if (add > 0.5f) {
+        add += 0.02f;
+        if (add > 2.05f) {
             add = 0.0f;
         }
         glUniform1f(addLocation, add);
