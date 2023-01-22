@@ -8,7 +8,7 @@ out float speed;
 
 void main() {
     speed = add;
-    if (pos_copy.x  != -1.0f)
+    if (pos_copy.x != -1.0f)
         pos_copy.x += add;
     gl_Position = pos_copy;
 }

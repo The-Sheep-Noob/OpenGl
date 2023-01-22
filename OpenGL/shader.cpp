@@ -68,7 +68,7 @@ Shader::Shader(const std::string path, const unsigned int shaderType , unsigned 
 
     }
 
-    glUseProgram(program_id);
+   glUseProgram(program_id);
 
 }
 

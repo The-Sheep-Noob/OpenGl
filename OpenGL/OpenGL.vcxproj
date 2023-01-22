@@ -145,6 +145,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="indexBuffer.cpp" />
+    <ClCompile Include="object.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="stb_image.cpp" />
@@ -161,6 +162,7 @@
   <ItemGroup>
     <ClInclude Include="abstraction.h" />
     <ClInclude Include="indexBuffer.h" />
+    <ClInclude Include="object.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="texture.h" />

@@ -5,7 +5,7 @@
 #include <GLM/gtc/matrix_transform.hpp>
 #include <fstream> // = file stream
 #include <string> // to use std::getline
-#include "abstraction.h"
+#include "object.h"
 
 class SwitchColor {
     private :
@@ -79,6 +79,9 @@ int main(void) {
         2,3,0,
     };
 
+    
+    VertexArray myVertexArray2;
+
     VertexBuffer myVertBuffer2;
     myVertBuffer2.setData(smallSquareBuffer , sizeof(smallSquareBuffer), GL_STATIC_DRAW);
     myVertBuffer2.layout(0, 2, sizeof(float) * 2);
@@ -88,10 +91,30 @@ int main(void) {
 
     Shader myFShader2("F_shader2.shader", GL_FRAGMENT_SHADER);
     Shader myVShader2("V_shader2.shader", GL_VERTEX_SHADER, myFShader2.getProgram());
-  
+
+
+   
+   float smallSquareBuffer3[] = {
+     1.0f, 1.0f,
+     1.0f, 0.9f,
+     0.9f, 0.9f,
+     0.9f, 1.0f
+    };
+
+    unsigned int indices3[] = { // has to be unsigned
+         0,1,2,
+         2,3,0,
+    };
+
+    Object square;
+    square.setVertexBuffer(smallSquareBuffer3, sizeof(smallSquareBuffer3), GL_STATIC_DRAW);
+    square.setVertexBufferLayout(0, 2, sizeof(float) * 2);
+    square.setIndexBuffer(indices3, 6 * sizeof(unsigned int), GL_STATIC_DRAW);
+    square.setShader("F_shader2.shader", GL_FRAGMENT_SHADER);
+    square.setShader("V_shader2.shader", GL_VERTEX_SHADER);
 
     float data[] = {
-       -0.7f, 0.5f ,0.0f, 1.0f,
+       -0.5f, 0.5f ,0.0f, 1.0f,
        -0.5f, -0.5f,0.0f, 0.0f,
         0.5f, -0.5f,1.0f, 0.0f,
         0.5f, 0.5f, 1.0f, 1.0f,
@@ -121,6 +144,9 @@ int main(void) {
 
     int addLocation = glGetUniformLocation(myFShader2.getProgram() , "add");
     float add = 0;
+
+    int addLocation2 = glGetUniformLocation(square.getProgram(), "add");
+    float add2 = 0;
 
     bool nice = true;
     int u_location = glGetUniformLocation(myFShader.getProgram(), "i_color"); // specifing uniform location
@@ -165,10 +191,7 @@ int main(void) {
         blueSwitch.Switch();
 
         myVertexArray.bind();
-        myIndexBuffer.bind();
-        myVertBuffer.bind();
         myFShader.bindProgram();
-       // myTexture.bind();
 
         glUniform4f(u_location, red, green, blue , 1.0f  ); // 4f = 4 floats -> setting uniform value
 
@@ -177,17 +200,25 @@ int main(void) {
 
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr); // draw from a index buffer
 
-        myVertexArray.unbind();
-        myIndexBuffer2.bind();
-        myVertBuffer2.bind();
+        myVertexArray2.bind();
         myFShader2.bindProgram();
 
-        add += 0.02f;
-        if (add > 2.05f) {
+        add += 0.05f;
+        if (add > 1.91f) {
             add = 0.0f;
         }
         glUniform1f(addLocation, add);
 
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr); // draw from a index buffer
+
+        add2 -= 0.05f;
+         if (add2 < -2.0f) {
+             add2 = 0;
+         }
+      //  std::cout << add2 << std::endl;
+        glProgramUniform1f(square.getProgram(), addLocation2, add2);
+
+        square.bind();
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr); // draw from a index buffer
 
 

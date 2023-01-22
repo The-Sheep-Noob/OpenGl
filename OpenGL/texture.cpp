@@ -14,8 +14,11 @@ Texture::~Texture() {
     glDeleteTextures(1, &texture_id);
 }
 
-Texture::Texture(const std::string path, unsigned int program_id) : texture_id(0) , width(0) , height(0) , bitPerPixel(0) {
+Texture::Texture(const std::string path, unsigned int program_id, int slot) : slot(slot) , texture_id(0), width(0), height(0), bitPerPixel(0) {
 
+    if (path == "" || program_id == 0) {
+        return;
+    }
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     // Blending = how texture are rendered
@@ -31,6 +34,7 @@ Texture::Texture(const std::string path, unsigned int program_id) : texture_id(0
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, textureData);
+    glActiveTexture(GL_TEXTURE0 + slot);
     glBindTexture(GL_TEXTURE_2D, texture_id);
 
     int uniformLocation = glGetUniformLocation(program_id, "tex"); // integer uniform = texture slot 
@@ -43,7 +47,7 @@ Texture::Texture(const std::string path, unsigned int program_id) : texture_id(0
 }
 
 void Texture::bind(){
-    glActiveTexture(GL_TEXTURE2); // all texture will be bind in slot 2
+    glActiveTexture(GL_TEXTURE0 + slot); // all texture will be bind in ${slot}
     glBindTexture(GL_TEXTURE_2D, texture_id);
 }
 

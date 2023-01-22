@@ -13,7 +13,7 @@ VertexArray::~VertexArray() {
 }
 
 void VertexArray::bind() {
-	glBindVertexArray( vertexArray);
+	glBindVertexArray(vertexArray);
 }
 
 void VertexArray::unbind() {
