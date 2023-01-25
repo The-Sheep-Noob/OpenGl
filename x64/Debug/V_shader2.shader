@@ -10,6 +10,5 @@ void main() {
     speed = add;
     if (pos_copy.x != -1.0f)
         pos_copy.x += add;
-    else pos_copy.x = 0.0f;
     gl_Position = pos_copy;
 }

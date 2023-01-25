@@ -156,8 +156,10 @@
   <ItemGroup>
     <None Include="F_shader.shader" />
     <None Include="F_shader2.shader" />
+    <None Include="F_sheep.shader" />
     <None Include="V_shader.shader" />
     <None Include="V_shader2.shader" />
+    <None Include="V_sheep.shader" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="abstraction.h" />
@@ -170,6 +172,7 @@
     <ClInclude Include="vertexBuffer.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Lightning.png" />
     <Image Include="shaun.png" />
     <Image Include="sheep.png" />
   </ItemGroup>

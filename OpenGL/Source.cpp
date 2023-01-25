@@ -32,6 +32,8 @@ class SwitchColor {
         }
 };
 
+const float height = 680.0f;
+const float width = 680.0f;
 
 
 int main(void) {
@@ -49,7 +51,7 @@ int main(void) {
 
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(680, 680, "So cool !", NULL , NULL);
+    window = glfwCreateWindow(width, height, "So cool !", NULL , NULL);
     if (!window)
     {
         glfwTerminate();
@@ -59,7 +61,8 @@ int main(void) {
     /* Make the window's context current */
     glfwMakeContextCurrent(window); // making a valid glfw window
 
-    glfwSwapInterval(5);
+    glfwSwapInterval(2);
+    //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     // glewInit need to be called after a valid glfw window was made
     if (glewInit() != GLEW_OK) {
@@ -79,20 +82,12 @@ int main(void) {
         2,3,0,
     };
 
-    
-    VertexArray myVertexArray2;
-
-    VertexBuffer myVertBuffer2;
-    myVertBuffer2.setData(smallSquareBuffer , sizeof(smallSquareBuffer), GL_STATIC_DRAW);
-    myVertBuffer2.layout(0, 2, sizeof(float) * 2);
-
-    IndexBuffer myIndexBuffer2;
-    myIndexBuffer2.setData(indices2, 6 * sizeof(unsigned int), GL_STATIC_DRAW);
-
-    Shader myFShader2("F_shader2.shader", GL_FRAGMENT_SHADER);
-    Shader myVShader2("V_shader2.shader", GL_VERTEX_SHADER, myFShader2.getProgram());
-
-
+   Object loading_bar;
+   loading_bar.setVertexBuffer(smallSquareBuffer, sizeof(smallSquareBuffer), GL_STATIC_DRAW);
+   loading_bar.setVertexBufferLayout(0, 2, sizeof(float) * 2);
+   loading_bar.setIndexBuffer(indices2, 6 * sizeof(unsigned int), GL_STATIC_DRAW);
+   loading_bar.setShader("F_shader2.shader", GL_FRAGMENT_SHADER);
+   loading_bar.setShader("V_shader2.shader", GL_VERTEX_SHADER);
    
    float smallSquareBuffer3[] = {
      1.0f, 1.0f,
@@ -126,34 +121,41 @@ int main(void) {
         2,3,0,
     };
     
+    Object sheep;
+    sheep.setVertexBuffer(data, sizeof(data), GL_STATIC_DRAW);
+    sheep.setVertexBufferLayout(0, 2, sizeof(float) * 4);
+    sheep.setVertexBufferLayout(1, 2, sizeof(float) * 4, sizeof(float) * 2);
+    sheep.setIndexBuffer(indices, 6 * sizeof(unsigned int), GL_STATIC_DRAW);
+    sheep.setShader("F_shader.shader", GL_FRAGMENT_SHADER);
+    sheep.setShader("V_shader.shader", GL_VERTEX_SHADER);
+    sheep.setTexture("shaun.png" , "tex");
 
-    VertexArray myVertexArray;
 
-    VertexBuffer myVertBuffer;
-    myVertBuffer.setData(data , sizeof(data), GL_STATIC_DRAW);
-    myVertBuffer.layout(0, 2, sizeof(float) * 4);
-    myVertBuffer.layout(1, 2, sizeof(float) * 4, sizeof(float) * 2);
+    float movSheepCoords[] = {
+        0.0f, 40.0f, 0.0f, 1.0f,
+        0.0f, 0.0f , 0.0f, 0.0f,
+        40.0f,0.0f , 1.0f, 0.0f,
+        40.0f,40.0f, 1.0f, 1.0f,
+    };
 
-    IndexBuffer myIndexBuffer;
-    myIndexBuffer.setData(indices, 6 * sizeof(unsigned int), GL_STATIC_DRAW);
+    unsigned int movSheepIndices[] = { // has to be unsigned
+        0,1,2,
+        2,3,0,
+    };
 
-    Shader myFShader("F_shader.shader", GL_FRAGMENT_SHADER);
-    Shader myVShader("V_shader.shader", GL_VERTEX_SHADER, myFShader.getProgram());
+    Object movSheep;
+    movSheep.setVertexBuffer(movSheepCoords, sizeof(movSheepCoords), GL_STATIC_DRAW);
+    movSheep.setVertexBufferLayout(0, 2, sizeof(float) * 4);
+    movSheep.setVertexBufferLayout(1, 2, sizeof(float) * 4, sizeof(float) * 2);
+    movSheep.setIndexBuffer(movSheepIndices, 6 * sizeof(unsigned int), GL_STATIC_DRAW);
+    movSheep.setShader("V_sheep.shader", GL_VERTEX_SHADER);
+    movSheep.setShader("F_sheep.shader", GL_FRAGMENT_SHADER);
+    glm::mat4 sheep_projection = glm::ortho( 0.0f, width, height, 0.0f, -1.0f, 1.0f); // if a vertex is more than the value it will be rendered out of the window
+    movSheep.setUniformMatrix4fv("proj", &sheep_projection[0][0]);
 
-    Texture myTexture("shaun.png" , myFShader.getProgram());
-
-    int addLocation = glGetUniformLocation(myFShader2.getProgram() , "add");
     float add = 0;
-
-    int addLocation2 = glGetUniformLocation(square.getProgram(), "add");
     float add2 = 0;
 
-    bool nice = true;
-    int u_location = glGetUniformLocation(myFShader.getProgram(), "i_color"); // specifing uniform location
-    if (u_location == -1) {
-        nice = false;
-        std::cout << "couldn't find uniform !" << std::endl;
-    }
     // uniform = way to pass data in a shader -> per draw
     // attribute  -> per vertex
 
@@ -168,14 +170,60 @@ int main(void) {
     SwitchColor blueSwitch(0.05f, blue);
 
     glm::mat4 projection = glm::ortho(-0.5f, 0.5f, -0.5f, 0.5f, -1.0f, 1.0f); // if a vertex is more than the value it will be rendered out of the window
-    int u2_location = glGetUniformLocation(myFShader.getProgram(), "projection"); // specifing uniform location
-
-    glUniformMatrix4fv(u2_location, 1, GL_FALSE, &projection[0][0]);
+    sheep.setUniformMatrix4fv("projection", &projection[0][0]);
     // &projection[0][0] = first matrix element memory location
     while (!glfwWindowShouldClose(window))
     {
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
+
+
+
+        greenSwitch.Switch();
+        redSwitch.Switch();
+        blueSwitch.Switch();
+        sheep.setUniform4f("i_color", red, green, blue, 1.0f);
+        sheep.draw();
+
+        //int whichID;
+        //glGetIntegerv(GL_TEXTURE_BINDING_2D, &whichID);
+        //std::cout << whichID << std::endl;
+
+        add += 0.05f;
+        if (add > 1.91f) {
+            add = 0.0f;
+        }
+        loading_bar.setUniform1f("add", add);
+        loading_bar.draw();
+
+
+         add2 -= 0.05f;
+         if (add2 < -2.0f) {
+             add2 = 0;
+         }
+        square.setUniform1f("add", add2);
+        square.draw();
+
+        double xpos, ypos;
+        glfwGetCursorPos(window, &xpos, &ypos);
+        movSheep.setUniform2f("mouse", xpos, ypos);
+        movSheep.setUniform1f("colorf",ypos * (1 / height));
+        movSheep.draw();
+
+
+        /* Swap front and back buffers */
+        glfwSwapBuffers(window);
+
+        /* Poll for and process events */
+        glfwPollEvents();
+
+    }
+
+    glfwTerminate();
+
+    return 0;
+}
+
 
        /* // legacy openGL {
         glBegin(GL_TRIANGLES);
@@ -185,51 +233,3 @@ int main(void) {
         glEnd();
         // }
         */
-
-        greenSwitch.Switch();
-        redSwitch.Switch();
-        blueSwitch.Switch();
-
-        myVertexArray.bind();
-        myFShader.bindProgram();
-
-        glUniform4f(u_location, red, green, blue , 1.0f  ); // 4f = 4 floats -> setting uniform value
-
-        //  object to draw , vertices to begin , number of vertices 
-       // glDrawArrays(GL_TRIANGLES,0,6); // draw the triangle
-
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr); // draw from a index buffer
-
-        myVertexArray2.bind();
-        myFShader2.bindProgram();
-
-        add += 0.05f;
-        if (add > 1.91f) {
-            add = 0.0f;
-        }
-        glUniform1f(addLocation, add);
-
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr); // draw from a index buffer
-
-        add2 -= 0.05f;
-         if (add2 < -2.0f) {
-             add2 = 0;
-         }
-      //  std::cout << add2 << std::endl;
-        glProgramUniform1f(square.getProgram(), addLocation2, add2);
-
-        square.bind();
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr); // draw from a index buffer
-
-
-        /* Swap front and back buffers */
-        glfwSwapBuffers(window);
-
-        /* Poll for and process events */
-        glfwPollEvents();
-    }
-
-    glfwTerminate();
-
-    return 0;
-}

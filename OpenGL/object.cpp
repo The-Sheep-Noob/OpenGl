@@ -1,14 +1,16 @@
 #include "object.h"
 #include <GLEW/glew.h>
 #include "abstraction.h"
+#include <iostream>
 
 Object::~Object(){
     glDeleteProgram(program_id);
 }
 
-Object::Object() : program_id(glCreateProgram()) , texture("" , 0) {};
+Object::Object() : program_id(glCreateProgram()) , point_count(0) {};
 
 void Object::bind(){
+    //texture.bind();
     vertexArray.bind();
     glUseProgram(program_id);
 }
@@ -17,6 +19,7 @@ void Object::bind(){
 void Object::setIndexBuffer(unsigned int arr[], int arrSize, int drawType){
     vertexArray.bind();
     indexBuffer.bind();
+    point_count = arrSize;
     indexBuffer.setData(arr, arrSize, drawType);
 }
 
@@ -33,9 +36,8 @@ void Object::setShader(const std::string path, const unsigned int shaderType){
     Shader shader(path , shaderType , program_id);
 }
 
-void Object::setTexture(const std::string path , int slot){
-    Texture textureGen(path , program_id , slot);
-    texture = textureGen;
+void Object::setTexture(const std::string path , std::string name , int slot){
+    texture = Texture( path , program_id ,name , slot );
 }
 
 
@@ -45,4 +47,52 @@ void Object::unbind(){
 
 unsigned int Object::getProgram(){
     return program_id;
+}
+
+
+void Object::setUniform1f(std::string name, float value) {
+
+    glProgramUniform1f(
+        program_id,
+        glGetUniformLocation(program_id, name.c_str()),
+        value
+    );
+}
+
+void Object::setUniform4f(std::string name, float value1 , float value2 , float value3 , float value4) {
+
+    glProgramUniform4f(
+        program_id,
+        glGetUniformLocation(program_id, name.c_str()),
+        value1 , value2, value3 , value4
+    );
+}
+
+void Object::setUniform2f(std::string name, float value1, float value2) {
+
+    glProgramUniform2f(
+        program_id,
+        glGetUniformLocation(program_id, name.c_str()),
+        value1, value2
+    );
+}
+
+
+void Object::setUniformMatrix4fv(std::string name, float* first_value) {
+    glProgramUniformMatrix4fv(
+        program_id,
+        glGetUniformLocation(program_id, name.c_str()),
+        1, GL_FALSE, 
+        first_value
+    );
+
+}
+
+void Object::draw() {
+    if (!point_count) {
+        std::cout << "nothing to draw !" << std::endl;
+        return;
+    }
+    bind();
+    glDrawElements(GL_TRIANGLES, point_count, GL_UNSIGNED_INT, nullptr);
 }
