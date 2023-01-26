@@ -1,8 +1,6 @@
 #include <GLEW/glew.h>
 #include<iostream>
 #include <GLFW/glfw3.h>
-#include <GLM/glm.hpp>
-#include <GLM/gtc/matrix_transform.hpp>
 #include <fstream> // = file stream
 #include <string> // to use std::getline
 #include "object.h"
@@ -38,7 +36,6 @@ const float width = 680.0f;
 
 int main(void) {
 
-
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR , 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3); // setting OpenGL to version 3.3
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // setting core profile
@@ -61,7 +58,7 @@ int main(void) {
     /* Make the window's context current */
     glfwMakeContextCurrent(window); // making a valid glfw window
 
-    glfwSwapInterval(2);
+    //glfwSwapInterval(2);
     //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     // glewInit need to be called after a valid glfw window was made
@@ -151,7 +148,10 @@ int main(void) {
     movSheep.setShader("V_sheep.shader", GL_VERTEX_SHADER);
     movSheep.setShader("F_sheep.shader", GL_FRAGMENT_SHADER);
     glm::mat4 sheep_projection = glm::ortho( 0.0f, width, height, 0.0f, -1.0f, 1.0f); // if a vertex is more than the value it will be rendered out of the window
-    movSheep.setUniformMatrix4fv("proj", &sheep_projection[0][0]);
+    glm::mat4 sheep_model = glm::translate(glm::mat4(0.1f) , glm::vec3(-20 , -20 ,0));
+    glm::mat4 mvp = sheep_projection * sheep_model;
+    //mvp = model (object translation) view (camera) projection (window size)
+    movSheep.setUniformMatrix4fv("mvp", mvp);
 
     float add = 0;
     float add2 = 0;
@@ -165,12 +165,14 @@ int main(void) {
     float green = 1.0f;
     float blue = 0.5f;
 
-    SwitchColor redSwitch(0.05f, red);
-    SwitchColor greenSwitch(0.05f, green);
-    SwitchColor blueSwitch(0.05f, blue);
+    SwitchColor redSwitch(0.01f, red);
+    SwitchColor greenSwitch(0.01f, green);
+    SwitchColor blueSwitch(0.01f, blue);
 
     glm::mat4 projection = glm::ortho(-0.5f, 0.5f, -0.5f, 0.5f, -1.0f, 1.0f); // if a vertex is more than the value it will be rendered out of the window
-    sheep.setUniformMatrix4fv("projection", &projection[0][0]);
+    
+    sheep.setUniformMatrix4fv("projection", projection);
+
     // &projection[0][0] = first matrix element memory location
     while (!glfwWindowShouldClose(window))
     {
@@ -189,7 +191,7 @@ int main(void) {
         //glGetIntegerv(GL_TEXTURE_BINDING_2D, &whichID);
         //std::cout << whichID << std::endl;
 
-        add += 0.05f;
+        add += 0.01f;
         if (add > 1.91f) {
             add = 0.0f;
         }
@@ -197,7 +199,7 @@ int main(void) {
         loading_bar.draw();
 
 
-         add2 -= 0.05f;
+         add2 -= 0.01f;
          if (add2 < -2.0f) {
              add2 = 0;
          }

@@ -23,7 +23,7 @@ public:
 	void setShader(const std::string path, const unsigned int shaderType);
 	void setTexture(const std::string path ,std::string name , int slot = 0);
 	void setUniform1f(std::string name, float value);
-	void setUniformMatrix4fv(std::string name, float* first_value);
+	void setUniformMatrix4fv(std::string name, glm::mat4& first_value);
 	void setUniform2f(std::string name, float value1, float value2);
 	void setUniform4f(std::string name, float value1, float value2, float value3, float value4);
 	void draw();

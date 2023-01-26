@@ -3,6 +3,7 @@
 #include "abstraction.h"
 #include <iostream>
 
+
 Object::~Object(){
     glDeleteProgram(program_id);
 }
@@ -78,12 +79,12 @@ void Object::setUniform2f(std::string name, float value1, float value2) {
 }
 
 
-void Object::setUniformMatrix4fv(std::string name, float* first_value) {
+void Object::setUniformMatrix4fv(std::string name, glm::mat4& first_value) {
     glProgramUniformMatrix4fv(
         program_id,
         glGetUniformLocation(program_id, name.c_str()),
         1, GL_FALSE, 
-        first_value
+        &first_value[0][0]
     );
 
 }
