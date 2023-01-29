@@ -1,7 +1,2 @@
-﻿  Source.cpp
-C:\Users\Yohan\source\repos\OpenGL\OpenGL\Source.cpp(51,38): warning C4244: 'argument': conversion from 'const float' to 'int', possible loss of data
-C:\Users\Yohan\source\repos\OpenGL\OpenGL\Source.cpp(51,31): warning C4244: 'argument': conversion from 'const float' to 'int', possible loss of data
-C:\Users\Yohan\source\repos\OpenGL\OpenGL\Source.cpp(211,46): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Yohan\source\repos\OpenGL\OpenGL\Source.cpp(211,40): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Yohan\source\repos\OpenGL\OpenGL\Source.cpp(212,45): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+﻿  texture.cpp
   OpenGL.vcxproj -> C:\Users\Yohan\source\repos\OpenGL\x64\Debug\OpenGL.exe

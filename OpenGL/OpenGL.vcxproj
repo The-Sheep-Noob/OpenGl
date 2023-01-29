@@ -71,6 +71,18 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -144,6 +156,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Dependencies\ImGUI\imgui.cpp" />
+    <ClCompile Include="..\Dependencies\ImGUI\imgui_demo.cpp" />
+    <ClCompile Include="..\Dependencies\ImGUI\imgui_draw.cpp" />
+    <ClCompile Include="..\Dependencies\ImGUI\imgui_impl_glfw_gl3.cpp" />
     <ClCompile Include="indexBuffer.cpp" />
     <ClCompile Include="object.cpp" />
     <ClCompile Include="shader.cpp" />
@@ -162,6 +178,13 @@
     <None Include="V_sheep.shader" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Dependencies\ImGUI\imconfig.h" />
+    <ClInclude Include="..\Dependencies\ImGUI\imgui.h" />
+    <ClInclude Include="..\Dependencies\ImGUI\imgui_impl_glfw_gl3.h" />
+    <ClInclude Include="..\Dependencies\ImGUI\imgui_internal.h" />
+    <ClInclude Include="..\Dependencies\ImGUI\stb_rect_pack.h" />
+    <ClInclude Include="..\Dependencies\ImGUI\stb_textedit.h" />
+    <ClInclude Include="..\Dependencies\ImGUI\stb_truetype.h" />
     <ClInclude Include="abstraction.h" />
     <ClInclude Include="indexBuffer.h" />
     <ClInclude Include="object.h" />
@@ -175,6 +198,9 @@
     <Image Include="Lightning.png" />
     <Image Include="shaun.png" />
     <Image Include="sheep.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\Dependencies\ImGUI\LICENSE.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -4,6 +4,10 @@
 #include <fstream> // = file stream
 #include <string> // to use std::getline
 #include "object.h"
+#include "stb_image.h" 
+
+#include "ImGUI/imgui.h"
+#include "ImGUI/imgui_impl_glfw_gl3.h"
 
 class SwitchColor {
     private :
@@ -32,6 +36,8 @@ class SwitchColor {
 
 const float height = 680.0f;
 const float width = 680.0f;
+
+
 
 
 int main(void) {
@@ -66,6 +72,8 @@ int main(void) {
         std::cout << "wth bro !" << std::endl;
     }
 
+
+   ImGui::CreateContext();
    
    float smallSquareBuffer[] = {
         -1.0f,-0.9f,
@@ -125,7 +133,7 @@ int main(void) {
     sheep.setIndexBuffer(indices, 6 * sizeof(unsigned int), GL_STATIC_DRAW);
     sheep.setShader("F_shader.shader", GL_FRAGMENT_SHADER);
     sheep.setShader("V_shader.shader", GL_VERTEX_SHADER);
-    sheep.setTexture("shaun.png" , "tex");
+    sheep.setTexture("shaun.png" , "tex" , true);
 
 
     float movSheepCoords[] = {
@@ -147,6 +155,7 @@ int main(void) {
     movSheep.setIndexBuffer(movSheepIndices, 6 * sizeof(unsigned int), GL_STATIC_DRAW);
     movSheep.setShader("V_sheep.shader", GL_VERTEX_SHADER);
     movSheep.setShader("F_sheep.shader", GL_FRAGMENT_SHADER);
+    movSheep.setTexture("Lightning.png", "texture" , false);
     glm::mat4 sheep_projection = glm::ortho( 0.0f, width, height, 0.0f, -1.0f, 1.0f); // if a vertex is more than the value it will be rendered out of the window
     glm::mat4 sheep_model = glm::translate(glm::mat4(0.1f) , glm::vec3(-20 , -20 ,0));
     glm::mat4 mvp = sheep_projection * sheep_model;
@@ -173,7 +182,7 @@ int main(void) {
     
     sheep.setUniformMatrix4fv("projection", projection);
 
-    // &projection[0][0] = first matrix element memory location
+
     while (!glfwWindowShouldClose(window))
     {
         /* Render here */
@@ -209,7 +218,7 @@ int main(void) {
         double xpos, ypos;
         glfwGetCursorPos(window, &xpos, &ypos);
         movSheep.setUniform2f("mouse", xpos, ypos);
-        movSheep.setUniform1f("colorf",ypos * (1 / height));
+        movSheep.setUniform4f("u_color",1.0f , 5.0f , 2.0f , 1.0f);
         movSheep.draw();
 
 

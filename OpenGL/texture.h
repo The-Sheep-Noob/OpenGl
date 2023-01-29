@@ -13,7 +13,8 @@ public:
 	int bitPerPixel;
 	~Texture();
 	Texture();
-	Texture(const std::string path, unsigned int program_id , std::string u_name, int slot = 0);
+	bool exist();
+	void setTexture(const std::string path, unsigned int program_id, std::string u_name, bool flipImage, int slot = 0);
 	void bind();
 	void unbind();
 };

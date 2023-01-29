@@ -10,17 +10,18 @@ unsigned char* Texture::getTexture(const std::string& path){
     return data;
 }
 
+bool Texture::exist() {
+    return (height != 0 && width != 0);
+}
+
 Texture::~Texture() {
     glDeleteTextures(1, &texture_id);
 }
-Texture::Texture() : slot(0), program_id(0), texture_id(0), width(0), height(0), bitPerPixel(0) {};
 
+Texture::Texture() : slot(0) , program_id(0) , texture_id(0), width(0), height(0), bitPerPixel(0) {}
 
-Texture::Texture(const std::string path, unsigned int program_id, std::string u_name , int slot) : slot(slot) , program_id(program_id) , texture_id(0), width(0), height(0), bitPerPixel(0) {
+void Texture::setTexture(const std::string path , unsigned int program_id , std::string u_name, bool flipImage , int slot) {
 
-    if (path == "" || program_id == 0) {
-        return;
-    }
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     // Blending = how texture are rendered
@@ -32,28 +33,25 @@ Texture::Texture(const std::string path, unsigned int program_id, std::string u_
 
 
 
-    stbi_set_flip_vertically_on_load(1); // flip texture to render pixels as OpenGL expect us to 
+    flipImage ? stbi_set_flip_vertically_on_load(1) : stbi_set_flip_vertically_on_load(0); // flip texture to render pixels as OpenGL expect us to 
     unsigned char* textureData = getTexture(path);
 
     glGenTextures(1, &texture_id);
-
+    glBindTexture(GL_TEXTURE_2D ,texture_id); // !!!
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, textureData);
-
-
+    glGenerateTextureMipmap(texture_id); // !!!
+    // or --> glGenerateMipmap(GL_TEXTURE_2D); 
     int uniformLocation = glGetUniformLocation(program_id, u_name.c_str()); // integer uniform = texture slot 
-    glUniform1i(uniformLocation, slot); // tell shader to get texture from ${slot}
+    glProgramUniform1i(program_id, uniformLocation, slot); // tell shader to get texture from ${slot}
 
     if (textureData)
-       stbi_image_free(textureData);
+        stbi_image_free(textureData);
     else
-      std::cout << "no data in texture buffer !!!!";
+        std::cout << "no data in texture buffer !!!!";
+
 }
 
 void Texture::bind(){
- 
-   std::cout << texture_id << std::endl;
-   std::cout << program_id << std::endl;
-
    glActiveTexture(GL_TEXTURE0 + slot);
    glBindTexture(GL_TEXTURE_2D, texture_id);
 }

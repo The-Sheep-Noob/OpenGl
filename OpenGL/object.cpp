@@ -8,12 +8,16 @@ Object::~Object(){
     glDeleteProgram(program_id);
 }
 
-Object::Object() : program_id(glCreateProgram()) , point_count(0) {};
+Object::Object() : program_id(glCreateProgram()) , point_count(0) {
+    glUseProgram(program_id);
+};
 
 void Object::bind(){
-    //texture.bind();
-    vertexArray.bind();
     glUseProgram(program_id);
+    if (texture.exist()) {
+        texture.bind();
+    }
+    vertexArray.bind();
 }
 
 
@@ -37,8 +41,10 @@ void Object::setShader(const std::string path, const unsigned int shaderType){
     Shader shader(path , shaderType , program_id);
 }
 
-void Object::setTexture(const std::string path , std::string name , int slot){
-    texture = Texture( path , program_id ,name , slot );
+void Object::setTexture(const std::string path , std::string name , bool flipImage, int slot){
+    std::cout << "texture added to program " << program_id << std::endl;
+    glUseProgram(program_id);
+    texture.setTexture( path , program_id ,name ,flipImage, slot );
 }
 
 

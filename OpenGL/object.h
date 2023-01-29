@@ -21,7 +21,7 @@ public:
 	void setVertexBuffer(float arr[], int arrSize, int drawType);
 	void setVertexBufferLayout(int index, int vertexCount, int stride, int begin=0);
 	void setShader(const std::string path, const unsigned int shaderType);
-	void setTexture(const std::string path ,std::string name , int slot = 0);
+	void setTexture(const std::string path ,std::string name , bool flipImage, int slot = 0);
 	void setUniform1f(std::string name, float value);
 	void setUniformMatrix4fv(std::string name, glm::mat4& first_value);
 	void setUniform2f(std::string name, float value1, float value2);

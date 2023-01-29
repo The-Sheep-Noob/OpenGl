@@ -1,8 +1,12 @@
 #version 330 core
 
 out vec4 color;
-uniform float colorf;
+in vec2 texCoords;
+
+uniform vec4 u_color;
+uniform sampler2D c_texture;
 
 void main() {
-	color = vec4(colorf , 0.5 / colorf, 0.5f, 1.0f);
+	vec4 texColor = texture(c_texture, texCoords) * u_color;
+	color = texColor;
 }
