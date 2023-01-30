@@ -42,8 +42,6 @@ void Object::setShader(const std::string path, const unsigned int shaderType){
 }
 
 void Object::setTexture(const std::string path , std::string name , bool flipImage, int slot){
-    std::cout << "texture added to program " << program_id << std::endl;
-    glUseProgram(program_id);
     texture.setTexture( path , program_id ,name ,flipImage, slot );
 }
 

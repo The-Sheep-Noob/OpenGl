@@ -74,6 +74,10 @@ int main(void) {
 
 
    ImGui::CreateContext();
+   ImGui_ImplGlfwGL3_Init(window, true);
+   ImGui::StyleColorsDark();
+
+
    
    float smallSquareBuffer[] = {
         -1.0f,-0.9f,
@@ -162,6 +166,28 @@ int main(void) {
     //mvp = model (object translation) view (camera) projection (window size)
     movSheep.setUniformMatrix4fv("mvp", mvp);
 
+
+
+
+    float mtCoords[] = {
+    0.0f, 0.25f, 0.0f, 0.9f, 0.0f,
+   -0.2f, -0.1f , 0.0f, 0.0f, 0.6f,
+    0.2f, -0.1f , 0.3f, 0.0f, 0.0f,
+    };
+
+    unsigned int mtIndices[] = { // has to be unsigned
+        0,1,2,
+    };
+
+    Object mt;
+    mt.setVertexBuffer(mtCoords, sizeof(mtCoords), GL_STATIC_DRAW);
+    mt.setVertexBufferLayout(0, 2, sizeof(float) * 5);
+    mt.setVertexBufferLayout(1, 3, sizeof(float) * 5, sizeof(float) * 2);
+    mt.setIndexBuffer(mtIndices, 3 * sizeof(unsigned int), GL_STATIC_DRAW);
+    mt.setShader("V_mt.shader", GL_VERTEX_SHADER);
+    mt.setShader("F_mt.shader", GL_FRAGMENT_SHADER);
+
+
     float add = 0;
     float add2 = 0;
 
@@ -182,12 +208,21 @@ int main(void) {
     
     sheep.setUniformMatrix4fv("projection", projection);
 
+    ImVec4 clear_color = ImVec4(1.0f, 0.0f, 0.0f, 1.00f);
+
 
     while (!glfwWindowShouldClose(window))
     {
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
+        ImGui_ImplGlfwGL3_NewFrame();
 
+        {
+     
+            ImGui::Text("Change cursor color:");
+            ImGui::ColorEdit4("clear color", (float*)&clear_color);
+            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+        }
 
 
         greenSwitch.Switch();
@@ -215,13 +250,16 @@ int main(void) {
         square.setUniform1f("add", add2);
         square.draw();
 
+        mt.draw();
+
         double xpos, ypos;
         glfwGetCursorPos(window, &xpos, &ypos);
         movSheep.setUniform2f("mouse", xpos, ypos);
-        movSheep.setUniform4f("u_color",1.0f , 5.0f , 2.0f , 1.0f);
+        movSheep.setUniform4f("u_color",clear_color.x , clear_color.y , clear_color.z , clear_color.w);
         movSheep.draw();
 
-
+        ImGui::Render();
+        ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
 
@@ -229,6 +267,10 @@ int main(void) {
         glfwPollEvents();
 
     }
+
+
+    ImGui_ImplGlfwGL3_Shutdown();
+    ImGui::DestroyContext();
 
     glfwTerminate();
 

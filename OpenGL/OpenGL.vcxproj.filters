@@ -80,6 +80,12 @@
     <None Include="V_sheep.shader">
       <Filter>Shader Files</Filter>
     </None>
+    <None Include="F_mt.shader">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="V_mt.shader">
+      <Filter>Shader Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="vertexBuffer.h">
