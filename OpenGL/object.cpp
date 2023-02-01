@@ -12,6 +12,16 @@ Object::Object() : program_id(glCreateProgram()) , point_count(0) {
     glUseProgram(program_id);
 };
 
+int Object::getUniformID(std::string& name) {
+    if (uniforms.find(name) == uniforms.end()) {
+        uniforms[name] = glGetUniformLocation(program_id, name.c_str());
+        return uniforms[name];
+    }
+    else {
+        return uniforms[name];
+    }
+}
+
 void Object::bind(){
     glUseProgram(program_id);
     if (texture.exist()) {
@@ -56,28 +66,25 @@ unsigned int Object::getProgram(){
 
 
 void Object::setUniform1f(std::string name, float value) {
-
     glProgramUniform1f(
         program_id,
-        glGetUniformLocation(program_id, name.c_str()),
+        getUniformID(name),
         value
     );
 }
 
 void Object::setUniform4f(std::string name, float value1 , float value2 , float value3 , float value4) {
-
     glProgramUniform4f(
         program_id,
-        glGetUniformLocation(program_id, name.c_str()),
+        getUniformID(name),
         value1 , value2, value3 , value4
     );
 }
 
 void Object::setUniform2f(std::string name, float value1, float value2) {
-
     glProgramUniform2f(
         program_id,
-        glGetUniformLocation(program_id, name.c_str()),
+        getUniformID(name),
         value1, value2
     );
 }
@@ -86,7 +93,7 @@ void Object::setUniform2f(std::string name, float value1, float value2) {
 void Object::setUniformMatrix4fv(std::string name, glm::mat4& first_value) {
     glProgramUniformMatrix4fv(
         program_id,
-        glGetUniformLocation(program_id, name.c_str()),
+        getUniformID(name),
         1, GL_FALSE, 
         &first_value[0][0]
     );

@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include "abstraction.h"
-
+#include <unordered_map>
 
 class Object {
 private:
@@ -11,6 +11,7 @@ private:
 	IndexBuffer indexBuffer;
 	VertexBuffer vertexBuffer;
 	Texture texture;
+	std::unordered_map<std::string, int> uniforms;
 public:
 	~Object();
 	Object();
@@ -26,5 +27,6 @@ public:
 	void setUniformMatrix4fv(std::string name, glm::mat4& first_value);
 	void setUniform2f(std::string name, float value1, float value2);
 	void setUniform4f(std::string name, float value1, float value2, float value3, float value4);
+	int getUniformID(std::string& name);
 	void draw();
 };
