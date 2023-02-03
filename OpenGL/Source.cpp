@@ -4,8 +4,8 @@
 #include <fstream> // = file stream
 #include <string> // to use std::getline
 #include "object.h"
+#include "camera.h"
 #include "stb_image.h" 
-
 #include "ImGUI/imgui.h"
 #include "ImGUI/imgui_impl_glfw_gl3.h"
 
@@ -71,6 +71,7 @@ int main(void) {
     if (glewInit() != GLEW_OK) {
         std::cout << "wth bro !" << std::endl;
     }
+
 
 
    ImGui::CreateContext();
@@ -186,6 +187,8 @@ int main(void) {
     mt.setIndexBuffer(mtIndices, 3 * sizeof(unsigned int), GL_STATIC_DRAW);
     mt.setShader("V_mt.shader", GL_VERTEX_SHADER);
     mt.setShader("F_mt.shader", GL_FRAGMENT_SHADER);
+    glm::mat4 camera = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0));
+    mt.setUniformMatrix4fv("cam", camera);
 
 
     float add = 0;
@@ -210,6 +213,8 @@ int main(void) {
 
     ImVec4 clear_color = ImVec4(1.0f, 0.0f, 0.0f, 1.00f);
 
+    Camera my_camera = Camera(0.02f, "cam");
+    my_camera.addObjectToCamera(&mt);
 
     while (!glfwWindowShouldClose(window))
     {
@@ -223,8 +228,8 @@ int main(void) {
             ImGui::ColorEdit4("cursor color", (float*)&clear_color);
             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
         }
-
-
+        
+        my_camera.setCameraPosition(window);
         greenSwitch.Switch();
         redSwitch.Switch();
         blueSwitch.Switch();

@@ -8,9 +8,7 @@ Object::~Object(){
     glDeleteProgram(program_id);
 }
 
-Object::Object() : program_id(glCreateProgram()) , point_count(0) {
-    glUseProgram(program_id);
-};
+Object::Object() : program_id(glCreateProgram()) , point_count(0) {};
 
 int Object::getUniformID(std::string& name) {
     if (uniforms.find(name) == uniforms.end()) {

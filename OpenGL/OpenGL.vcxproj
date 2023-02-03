@@ -160,6 +160,7 @@
     <ClCompile Include="..\Dependencies\ImGUI\imgui_demo.cpp" />
     <ClCompile Include="..\Dependencies\ImGUI\imgui_draw.cpp" />
     <ClCompile Include="..\Dependencies\ImGUI\imgui_impl_glfw_gl3.cpp" />
+    <ClCompile Include="camera.cpp" />
     <ClCompile Include="indexBuffer.cpp" />
     <ClCompile Include="object.cpp" />
     <ClCompile Include="shader.cpp" />
@@ -188,6 +189,7 @@
     <ClInclude Include="..\Dependencies\ImGUI\stb_textedit.h" />
     <ClInclude Include="..\Dependencies\ImGUI\stb_truetype.h" />
     <ClInclude Include="abstraction.h" />
+    <ClInclude Include="camera.h" />
     <ClInclude Include="indexBuffer.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="shader.h" />
