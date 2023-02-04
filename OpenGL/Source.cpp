@@ -34,8 +34,8 @@ class SwitchColor {
         }
 };
 
-const float height = 680.0f;
-const float width = 680.0f;
+const float height = 700.0f;
+const float width = 700.0f;
 
 
 

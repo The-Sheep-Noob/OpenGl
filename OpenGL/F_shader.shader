@@ -8,7 +8,7 @@ uniform sampler2D tex;
 
 void main() {
 	vec4 texColor = texture(tex, texCoords);
-	if (texColor == 0)
+	if (texColor.w >= 0 && texColor.w < 0.75)
 		color = i_color;
 	else 
 		color = texColor;
