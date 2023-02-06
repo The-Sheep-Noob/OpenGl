@@ -43,25 +43,42 @@ void Camera::setIncrement(float inc){
 void Camera::setUniformName(std::string uniform_n){
 	Camera::uniform = uniform_n;
 }
+void Camera::setPositionBool(bool& pos, int& action , int& key , int mykey) {
+	if (key == mykey) {
+		if (action == GLFW_PRESS) {
+			pos = true;
+		}
+		if (action == GLFW_RELEASE) {
+			pos = false;
+		}
+	}
+}
+
 
 void Camera::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-	resetPosition();
-	if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS) {
-		right = true;
-		return;
-	}
-	if (key == GLFW_KEY_LEFT && action == GLFW_PRESS) {
+	//resetPosition();
+	setPositionBool(right, action,key , GLFW_KEY_RIGHT);
+	setPositionBool(left, action, key, GLFW_KEY_LEFT);
+	setPositionBool(up, action, key, GLFW_KEY_UP);
+	setPositionBool(down, action, key, GLFW_KEY_DOWN);
+
+	/*if (key == GLFW_KEY_RIGHT) {
+		if (action == GLFW_PRESS) {
+			right = true;
+		}
+		if (action == GLFW_RELEASE) {
+			right = false;
+		}
+	}*/
+	/*if (key == GLFW_KEY_LEFT && action == GLFW_PRESS) {
 		left = true;
-		return;
 	}
 	if (key == GLFW_KEY_UP && action == GLFW_PRESS) {
 		up = true;
-		return;
 	}
 	if (key == GLFW_KEY_DOWN && action == GLFW_PRESS) {
 		down = true;
-		return;
-	}
+	}*/
 }
 void Camera::set_uniforms(){
 	glm::mat4 camera = glm::translate(glm::mat4(1.0f), transformMatrice);

@@ -17,6 +17,7 @@ private:
 	inline static std::string uniform;
 	inline static std::vector<Object*> objects;
 	inline static void resetPosition();
+	inline static void setPositionBool(bool& pos, int& action , int& key , int mykey);
 	inline static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 	inline static void set_uniforms();
 public:
