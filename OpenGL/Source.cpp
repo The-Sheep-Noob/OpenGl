@@ -93,9 +93,9 @@ int main(void) {
     };
 
    Object loading_bar;
-   loading_bar.setVertexBuffer(smallSquareBuffer, sizeof(smallSquareBuffer), GL_STATIC_DRAW);
+   loading_bar.setStaticVertexBuffer(smallSquareBuffer, sizeof(smallSquareBuffer));
    loading_bar.setVertexBufferLayout(0, 2, sizeof(float) * 2);
-   loading_bar.setIndexBuffer(indices2, 6 * sizeof(unsigned int), GL_STATIC_DRAW);
+   loading_bar.setStaticIndexBuffer(indices2, 6 * sizeof(unsigned int));
    loading_bar.setShader("F_shader2.shader", GL_FRAGMENT_SHADER);
    loading_bar.setShader("V_shader2.shader", GL_VERTEX_SHADER);
    
@@ -112,9 +112,9 @@ int main(void) {
     };
 
     Object square;
-    square.setVertexBuffer(smallSquareBuffer3, sizeof(smallSquareBuffer3), GL_STATIC_DRAW);
+    square.setStaticVertexBuffer(smallSquareBuffer3, sizeof(smallSquareBuffer3));
     square.setVertexBufferLayout(0, 2, sizeof(float) * 2);
-    square.setIndexBuffer(indices3, 6 * sizeof(unsigned int), GL_STATIC_DRAW);
+    square.setStaticIndexBuffer(indices3, 6 * sizeof(unsigned int));
     square.setShader("F_shader2.shader", GL_FRAGMENT_SHADER);
     square.setShader("V_shader2.shader", GL_VERTEX_SHADER);
 
@@ -132,10 +132,10 @@ int main(void) {
     };
     
     Object sheep;
-    sheep.setVertexBuffer(data, sizeof(data), GL_STATIC_DRAW);
+    sheep.setStaticVertexBuffer(data, sizeof(data));
     sheep.setVertexBufferLayout(0, 2, sizeof(float) * 4);
     sheep.setVertexBufferLayout(1, 2, sizeof(float) * 4, sizeof(float) * 2);
-    sheep.setIndexBuffer(indices, 6 * sizeof(unsigned int), GL_STATIC_DRAW);
+    sheep.setStaticIndexBuffer(indices, 6 * sizeof(unsigned int));
     sheep.setShader("F_shader.shader", GL_FRAGMENT_SHADER);
     sheep.setShader("V_shader.shader", GL_VERTEX_SHADER);
     sheep.setTexture("shaun.png" , "tex" , true);
@@ -154,10 +154,10 @@ int main(void) {
     };
 
     Object movSheep;
-    movSheep.setVertexBuffer(movSheepCoords, sizeof(movSheepCoords), GL_STATIC_DRAW);
+    movSheep.setStaticVertexBuffer(movSheepCoords, sizeof(movSheepCoords));
     movSheep.setVertexBufferLayout(0, 2, sizeof(float) * 4);
     movSheep.setVertexBufferLayout(1, 2, sizeof(float) * 4, sizeof(float) * 2);
-    movSheep.setIndexBuffer(movSheepIndices, 6 * sizeof(unsigned int), GL_STATIC_DRAW);
+    movSheep.setStaticIndexBuffer(movSheepIndices, 6 * sizeof(unsigned int));
     movSheep.setShader("V_sheep.shader", GL_VERTEX_SHADER);
     movSheep.setShader("F_sheep.shader", GL_FRAGMENT_SHADER);
     movSheep.setTexture("Lightning.png", "texture" , false);
@@ -181,10 +181,10 @@ int main(void) {
     };
 
     Object mt;
-    mt.setVertexBuffer(mtCoords, sizeof(mtCoords), GL_STATIC_DRAW);
+    mt.setDynamicVertexBuffer(mtCoords, sizeof(mtCoords));
     mt.setVertexBufferLayout(0, 2, sizeof(float) * 5);
     mt.setVertexBufferLayout(1, 3, sizeof(float) * 5, sizeof(float) * 2);
-    mt.setIndexBuffer(mtIndices, 3 * sizeof(unsigned int), GL_STATIC_DRAW);
+    mt.setDynamicIndexBuffer(mtIndices, 3 * sizeof(unsigned int));
     mt.setShader("V_mt.shader", GL_VERTEX_SHADER);
     mt.setShader("F_mt.shader", GL_FRAGMENT_SHADER);
     glm::mat4 camera = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0));
@@ -229,6 +229,7 @@ int main(void) {
             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
         }
         
+
         my_camera.setCameraPosition(window);
         greenSwitch.Switch();
         redSwitch.Switch();
@@ -255,6 +256,8 @@ int main(void) {
         square.setUniform1f("add", add2);
         square.draw();
 
+        mtCoords[0] += 0.001f;
+        mt.setDynamicVertexBuffer(mtCoords, sizeof(mtCoords));
         mt.draw();
 
         double xpos, ypos;

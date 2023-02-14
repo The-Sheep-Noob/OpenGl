@@ -8,7 +8,7 @@ Object::~Object(){
     glDeleteProgram(program_id);
 }
 
-Object::Object() : program_id(glCreateProgram()) , point_count(0) {};
+Object::Object() : is_using_dynamic_buffer(false), index_buffer_is_set(false), vertex_buffer_is_set(false) , program_id(glCreateProgram()), point_count(0) {};
 
 int Object::getUniformID(std::string& name) {
     if (uniforms.find(name) == uniforms.end()) {
@@ -28,21 +28,66 @@ void Object::bind(){
     vertexArray.bind();
 }
 
-
-void Object::setIndexBuffer(unsigned int arr[], int arrSize, int drawType){
+void Object::setStaticIndexBuffer(unsigned int arr[], int arrSize){
     vertexArray.bind();
-    indexBuffer.bind();
+    S_indexBuffer.bind();
     point_count = arrSize;
-    indexBuffer.setData(arr, arrSize, drawType);
+    S_indexBuffer.setData(arr, arrSize, GL_STATIC_DRAW);
+
+    is_using_dynamic_buffer = false;
 }
 
-void Object::setVertexBuffer(float arr[], int arrSize, int drawType){
-    vertexBuffer.bind();
-    vertexBuffer.setData(arr,arrSize , drawType);
+void Object::setDynamicIndexBuffer(unsigned int arr[], int arrSize) {
+    vertexArray.bind();
+    if (index_buffer_is_set)
+    {
+        D_indexBuffer.bind();
+        glBufferSubData(GL_ARRAY_BUFFER, 0, arrSize, arr);
+    }
+    else
+    {
+        D_indexBuffer.bind();
+        point_count = arrSize;
+        D_indexBuffer.setData(arr, arrSize, GL_DYNAMIC_DRAW);
+        index_buffer_is_set = true;
+        is_using_dynamic_buffer = true;
+    }
 }
+
+void Object::setStaticVertexBuffer(float arr[], int arrSize){
+    vertexArray.bind();
+
+    S_vertexBuffer.bind();
+    S_vertexBuffer.setData(arr,arrSize , GL_STATIC_DRAW);
+
+    is_using_dynamic_buffer = false;
+}
+
+void Object::setDynamicVertexBuffer(float arr[], int arrSize) { 
+    vertexArray.bind();
+    if (vertex_buffer_is_set)
+    {
+        D_vertexBuffer.bind();
+        glBufferSubData(GL_ARRAY_BUFFER, 0, arrSize, arr);
+    }
+    else
+    {
+        D_vertexBuffer.bind();
+        D_vertexBuffer.setData(arr, arrSize, GL_DYNAMIC_DRAW);
+        vertex_buffer_is_set = true;
+        is_using_dynamic_buffer = true;
+    }
+}
+
 void Object::setVertexBufferLayout(int index, int vertexCount, int stride, int begin) {
-    vertexBuffer.bind();
-    vertexBuffer.layout(index , vertexCount , stride , begin);
+    if (is_using_dynamic_buffer) {
+        D_vertexBuffer.bind();
+        D_vertexBuffer.layout(index, vertexCount, stride, begin);
+    }
+    else {
+        S_vertexBuffer.bind();
+        S_vertexBuffer.layout(index , vertexCount , stride , begin);
+    }
 }
 
 void Object::setShader(const std::string path, const unsigned int shaderType){
