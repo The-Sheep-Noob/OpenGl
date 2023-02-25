@@ -164,6 +164,7 @@
     <ClCompile Include="indexBuffer.cpp" />
     <ClCompile Include="object.cpp" />
     <ClCompile Include="shader.cpp" />
+    <ClCompile Include="shapes.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="texture.cpp" />
@@ -175,10 +176,12 @@
     <None Include="F_shader.shader" />
     <None Include="F_shader2.shader" />
     <None Include="F_sheep.shader" />
+    <None Include="F_square.shader" />
     <None Include="V_mt.shader" />
     <None Include="V_shader.shader" />
     <None Include="V_shader2.shader" />
     <None Include="V_sheep.shader" />
+    <None Include="V_square.shader" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Dependencies\ImGUI\imconfig.h" />
@@ -192,6 +195,7 @@
     <ClInclude Include="camera.h" />
     <ClInclude Include="indexBuffer.h" />
     <ClInclude Include="object.h" />
+    <ClInclude Include="shapes.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="texture.h" />

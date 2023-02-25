@@ -5,7 +5,6 @@
 #include <GLFW/glfw3.h>
 
 
-
 class Camera {
 private:
 	inline static glm::vec3 transformMatrice;

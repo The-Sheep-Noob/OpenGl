@@ -116,6 +116,14 @@ void Object::setUniform1f(std::string name, float value) {
     );
 }
 
+void Object::setUniform1b(std::string name, bool value) {
+    glProgramUniform1i(
+        program_id,
+        getUniformID(name),
+        value
+    );
+}
+
 void Object::setUniform4f(std::string name, float value1 , float value2 , float value3 , float value4) {
     glProgramUniform4f(
         program_id,
@@ -151,3 +159,5 @@ void Object::draw() {
     bind();
     glDrawElements(GL_TRIANGLES, point_count, GL_UNSIGNED_INT, nullptr);
 }
+
+

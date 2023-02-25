@@ -4,7 +4,7 @@
 #include <unordered_map>
 
 class Object {
-private:
+protected :
 	unsigned int program_id;
 	int point_count;
 	VertexArray vertexArray;
@@ -31,9 +31,11 @@ public:
 	void setShader(const std::string path, const unsigned int shaderType);
 	void setTexture(const std::string path ,std::string name , bool flipImage, int slot = 0);
 	void setUniform1f(std::string name, float value);
+	void setUniform1b(std::string name, bool value);
 	void setUniformMatrix4fv(std::string name, glm::mat4& first_value);
 	void setUniform2f(std::string name, float value1, float value2);
 	void setUniform4f(std::string name, float value1, float value2, float value3, float value4);
 	int getUniformID(std::string& name);
-	void draw();
+	void virtual draw();
 };
+

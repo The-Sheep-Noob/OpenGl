@@ -8,6 +8,7 @@
 #include "stb_image.h" 
 #include "ImGUI/imgui.h"
 #include "ImGUI/imgui_impl_glfw_gl3.h"
+#include "shapes.h"
 
 class SwitchColor {
     private :
@@ -103,7 +104,7 @@ int main(void) {
      1.0f, 1.0f,
      1.0f, 0.9f,
      0.9f, 0.9f,
-     0.9f, 1.0f
+     0.9f, 1.0f 
     };
 
     unsigned int indices3[] = { // has to be unsigned
@@ -194,6 +195,19 @@ int main(void) {
     float add = 0;
     float add2 = 0;
 
+    Square testing;
+    testing.G = 255;
+    testing.Size = 20;
+    testing.X = 350;
+    testing.Y = 350;
+
+    Square testing2;
+    testing2.R = 255;
+    testing2.Size = 255;
+    testing2.X = 359;
+    testing2.Y = 350;
+
+
     // uniform = way to pass data in a shader -> per draw
     // attribute  -> per vertex
 
@@ -256,7 +270,7 @@ int main(void) {
         square.setUniform1f("add", add2);
         square.draw();
 
-        mtCoords[0] += 0.001f;
+        //mtCoords[0] += 0.001f;
         mt.setDynamicVertexBuffer(mtCoords, sizeof(mtCoords));
         mt.draw();
 
@@ -265,6 +279,8 @@ int main(void) {
         movSheep.setUniform2f("mouse", xpos, ypos);
         movSheep.setUniform4f("u_color",clear_color.x , clear_color.y , clear_color.z , clear_color.w);
         movSheep.draw();
+
+        Shapes::renderShapes();
 
         ImGui::Render();
         ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());

@@ -63,6 +63,9 @@
     <ClCompile Include="camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="shapes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="V_shader.shader">
@@ -87,6 +90,12 @@
       <Filter>Shader Files</Filter>
     </None>
     <None Include="V_mt.shader">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="F_square.shader">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="V_square.shader">
       <Filter>Shader Files</Filter>
     </None>
   </ItemGroup>
@@ -137,6 +146,9 @@
       <Filter>Resource Files</Filter>
     </ClInclude>
     <ClInclude Include="camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shapes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
